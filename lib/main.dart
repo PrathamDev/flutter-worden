@@ -2,12 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
+import 'package:worden/models/database/cache.dart';
 import 'package:worden/pages/auth_page.dart';
 import 'package:worden/pages/home_page.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await Cache.initialize();
   runApp(const App());
 }
 
@@ -16,22 +19,57 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: GoogleFonts.poppinsTextTheme(),
-        pageTransitionsTheme: const PageTransitionsTheme(
-          builders: {
-            TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
-            TargetPlatform.android: ZoomPageTransitionsBuilder(),
-          },
-        ),
-      ),
-      debugShowCheckedModeBanner: false,
-      title: "Worden",
-      home: FirebaseAuth.instance.currentUser == null
-          ? const AuthPage()
-          : const HomePage(),
-    );
+    return ValueListenableBuilder<Box>(
+        valueListenable: Cache.getPreferencesListenable(),
+        builder: (context, box, widget) {
+          return MaterialApp(
+            themeMode: box.get('darkMode', defaultValue: false)
+                ? ThemeMode.dark
+                : ThemeMode.light,
+            darkTheme: ThemeData(
+              scaffoldBackgroundColor: Colors.black,
+            ),
+            theme: ThemeData(
+              scaffoldBackgroundColor: Colors.white,
+              androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
+              textTheme: GoogleFonts.poppinsTextTheme(),
+              floatingActionButtonTheme: FloatingActionButtonThemeData(
+                backgroundColor: Colors.brown.shade900,
+              ),
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Colors.white,
+                elevation: 0,
+                iconTheme: IconThemeData(
+                  color: Colors.black,
+                  opacity: 0.8,
+                  size: 25,
+                ),
+                titleTextStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              textButtonTheme: TextButtonThemeData(
+                  style: ButtonStyle(
+                shape: MaterialStateProperty.all(
+                  const CircleBorder(),
+                ),
+                overlayColor: MaterialStateProperty.all(Colors.grey.shade100),
+              )),
+              pageTransitionsTheme: const PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+                  TargetPlatform.android: ZoomPageTransitionsBuilder(),
+                },
+              ),
+            ),
+            debugShowCheckedModeBanner: false,
+            title: "Worden",
+            home: FirebaseAuth.instance.currentUser == null
+                ? const AuthPage()
+                : const HomePage(),
+          );
+        });
   }
 }

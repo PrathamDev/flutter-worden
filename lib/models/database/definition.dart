@@ -8,6 +8,7 @@ class Definition {
 
   static Definition fromMap(Map<String, dynamic> map) {
     return Definition(
-        definition: map['definition'], partsOfSpeech: map['partOfSpeech']);
+        definition: map['definition'] ?? '',
+        partsOfSpeech: map['partOfSpeech'] ?? '');
   }
 }

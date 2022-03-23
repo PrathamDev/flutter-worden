@@ -35,7 +35,10 @@ dependencies:
     sdk: flutter
   fluttertoast: ^8.0.9
   google_fonts: ^2.3.1
+  hive: ^2.1.0
+  hive_flutter: ^1.1.0
   simple_ripple_animation: ^0.0.3
+  speech_to_text: ^5.4.3
 
 dev_dependencies:
   flutter_lints: ^1.0.0

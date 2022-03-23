@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 mixin AuthMixin {
@@ -15,6 +16,12 @@ mixin AuthMixin {
     UserCredential credentials = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     await credentials.user!.updateDisplayName(username);
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(credentials.user!.uid)
+        .set({
+      "bookmarks": [],
+    });
     return credentials.user;
   }
 }

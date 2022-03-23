@@ -14,15 +14,31 @@ class Dictionary {
         await word.firebaseSnapshot();
 
     if (snapshot.exists) {
-      response = DictionaryResponse.fromMap(snapshot.data()!);
+      response = DictionaryResponse.fromMap(snapshot.id, snapshot.data()!);
     } else {
-      response = await retrieveDefinitionFromApi(word);
+      Map<String, dynamic> result = {};
+      var definitions = await retrieveDefinitionFromApi(word);
+      var synonyms = await retrieveSynonymsFromApi(word);
+      var antonyms = await retrieveAntonymsFromApi(word);
+      var examples = await retrieveExamplesFromApi(word);
+
+      result.addAll({
+        "definitions": definitions["definitions"],
+        "synonyms": synonyms["synonyms"],
+        "antonyms": antonyms['antonyms'],
+        "examples": examples['examples'],
+      });
+
+      word.addInFirebase(result);
+
+      response = DictionaryResponse.fromMap(word.value, result);
     }
 
     return response;
   }
 
-  static Future<DictionaryResponse> retrieveDefinitionFromApi(Word word) async {
+  static Future<Map<String, dynamic>> retrieveDefinitionFromApi(
+      Word word) async {
     String url = Api.getDefinitionUrl(word.value);
     Uri uri = Uri.parse(url);
     Response response = await get(
@@ -37,8 +53,61 @@ class Dictionary {
       throw ApiException(
           code: ApiExceptionCode.wordNotFound, message: result['message']);
     }
-    await word.addDefinitionInFirebase(result);
-    DictionaryResponse dictionaryResponse = DictionaryResponse.fromMap(result);
-    return dictionaryResponse;
+
+    return result;
+  }
+
+  static Future<Map<String, dynamic>> retrieveSynonymsFromApi(Word word) async {
+    String url = Api.getSynonymsUrl(word.value);
+    Uri uri = Uri.parse(url);
+    Response response = await get(
+      uri,
+      headers: {
+        'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+        'x-rapidapi-key': '89e3b19de5mshe9a358475848012p113b65jsn9a953ecd2efe'
+      },
+    );
+    Map<String, dynamic> result = jsonDecode(response.body);
+    if (result["success"] == false) {
+      throw ApiException(
+          code: ApiExceptionCode.wordNotFound, message: result['message']);
+    }
+    return result;
+  }
+
+  static Future<Map<String, dynamic>> retrieveAntonymsFromApi(Word word) async {
+    String url = Api.getAntonymsUrl(word.value);
+    Uri uri = Uri.parse(url);
+    Response response = await get(
+      uri,
+      headers: {
+        'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+        'x-rapidapi-key': '89e3b19de5mshe9a358475848012p113b65jsn9a953ecd2efe'
+      },
+    );
+    Map<String, dynamic> result = jsonDecode(response.body);
+    if (result["success"] == false) {
+      throw ApiException(
+          code: ApiExceptionCode.wordNotFound, message: result['message']);
+    }
+    return result;
+  }
+
+  static Future<Map<String, dynamic>> retrieveExamplesFromApi(Word word) async {
+    String url = Api.getExamplesUrl(word.value);
+    Uri uri = Uri.parse(url);
+    Response response = await get(
+      uri,
+      headers: {
+        'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+        'x-rapidapi-key': '89e3b19de5mshe9a358475848012p113b65jsn9a953ecd2efe'
+      },
+    );
+    Map<String, dynamic> result = jsonDecode(response.body);
+    if (result["success"] == false) {
+      throw ApiException(
+          code: ApiExceptionCode.wordNotFound, message: result['message']);
+    }
+    return result;
   }
 }
