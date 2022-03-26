@@ -30,6 +30,7 @@ class _SignUpTabState extends State<SignUpTab> with AuthMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,

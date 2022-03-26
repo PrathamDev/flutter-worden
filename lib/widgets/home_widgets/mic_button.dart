@@ -33,18 +33,14 @@ class _MicButtonState extends State<MicButton> {
           });
           SpeechToText speechToText = SpeechToText();
           await speechToText.initialize(
-            onStatus: (status) {
-              if (status == 'done') {
-                setState(() {
-                  isSelected = false;
-                });
-              }
-            },
             onError: (error) {},
             debugLogging: true,
           );
           speechToText.listen(
             onResult: (result) {
+              setState(() {
+                isSelected = false;
+              });
               widget.onRecognition(result.recognizedWords);
             },
             listenMode: ListenMode.search,
@@ -59,7 +55,7 @@ class _MicButtonState extends State<MicButton> {
             const EdgeInsets.all(25),
           ),
           backgroundColor: MaterialStateProperty.all(
-            Colors.orange.shade800,
+            Colors.orange.shade900,
           ),
         ),
         child:

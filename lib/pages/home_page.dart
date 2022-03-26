@@ -10,6 +10,7 @@ import 'package:worden/models/database/dictionary_response.dart';
 import 'package:worden/models/database/word.dart';
 import 'package:worden/models/exception/api_exception.dart';
 import 'package:worden/pages/auth_page.dart';
+import 'package:worden/pages/bookmarks_page.dart';
 import 'package:worden/pages/profile_page.dart';
 import 'package:worden/pages/result_page.dart';
 import 'package:worden/widgets/home_widgets/mic_button.dart';
@@ -37,7 +38,10 @@ class _HomePageState extends State<HomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(),
       drawer: Drawer(
-        backgroundColor: Colors.white,
+        backgroundColor:
+            MediaQuery.of(context).platformBrightness == Brightness.light
+                ? Colors.white
+                : Colors.grey.shade900,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -48,10 +52,16 @@ class _HomePageState extends State<HomePage> {
                 horizontal: 5,
               ),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: MediaQuery.of(context).platformBrightness ==
+                        Brightness.light
+                    ? Colors.white
+                    : Colors.grey.shade900,
                 border: Border(
                   bottom: BorderSide(
-                    color: Colors.black.withOpacity(0.3),
+                    color: MediaQuery.of(context).platformBrightness ==
+                            Brightness.light
+                        ? Colors.black.withOpacity(0.3)
+                        : Colors.white54,
                     width: 1,
                   ),
                 ),
@@ -60,19 +70,30 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 32,
-                    backgroundColor: Colors.white,
-                    backgroundImage: AssetImage(
-                      'assets/default_user_image.png',
-                    ),
+                    backgroundColor:
+                        MediaQuery.of(context).platformBrightness ==
+                                Brightness.light
+                            ? Colors.white
+                            : Colors.black,
+                    backgroundImage:
+                        FirebaseAuth.instance.currentUser!.photoURL == null
+                            ? const AssetImage(
+                                'assets/default_user_image.png',
+                              )
+                            : NetworkImage(FirebaseAuth.instance.currentUser!
+                                .photoURL!) as ImageProvider,
                   ),
                   const SizedBox(height: 10),
                   Text(
                     FirebaseAuth.instance.currentUser!.displayName ??
                         'Username',
                     style: TextStyle(
-                      color: Colors.black.withOpacity(0.8),
+                      color: MediaQuery.of(context).platformBrightness ==
+                              Brightness.light
+                          ? Colors.black.withOpacity(0.8)
+                          : Colors.white,
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
                     ),
@@ -83,7 +104,10 @@ class _HomePageState extends State<HomePage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: Colors.black.withOpacity(0.8),
+                      color: MediaQuery.of(context).platformBrightness ==
+                              Brightness.light
+                          ? Colors.black.withOpacity(0.8)
+                          : Colors.white54,
                       fontWeight: FontWeight.w400,
                       fontSize: 15,
                     ),
@@ -96,57 +120,83 @@ class _HomePageState extends State<HomePage> {
               height: 10,
             ),
             ListTile(
-              title: const Text(
+              title: Text(
                 'Profile',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
+                  color: MediaQuery.of(context).platformBrightness ==
+                          Brightness.light
+                      ? Colors.black.withOpacity(0.8)
+                      : Colors.white70,
                 ),
               ),
               minLeadingWidth: 20,
-              leading: const Icon(
+              leading: Icon(
                 Icons.person,
-                color: Colors.black,
+                color: MediaQuery.of(context).platformBrightness ==
+                        Brightness.light
+                    ? Colors.black
+                    : Colors.white70,
+              ),
+              onTap: () async {
+                Navigator.pop(context);
+                await Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const ProfilePage();
+                  },
+                ));
+                setState(() {});
+              },
+            ),
+            ListTile(
+              title: Text(
+                'Bookmarks',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: MediaQuery.of(context).platformBrightness ==
+                          Brightness.light
+                      ? Colors.black
+                      : Colors.white70,
+                ),
+              ),
+              minLeadingWidth: 20,
+              leading: Icon(
+                Icons.bookmarks_outlined,
+                color: MediaQuery.of(context).platformBrightness ==
+                        Brightness.light
+                    ? Colors.black
+                    : Colors.white70,
               ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
-                    return const ProfilePage();
+                    return const BookmarksPage();
                   },
                 ));
               },
             ),
             ListTile(
-              title: const Text(
-                'Bookmarks',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              minLeadingWidth: 20,
-              leading: const Icon(
-                Icons.bookmarks_outlined,
-                color: Colors.black,
-              ),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: const Text(
+              title: Text(
                 'Sign out',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
+                  color: MediaQuery.of(context).platformBrightness ==
+                          Brightness.light
+                      ? Colors.black
+                      : Colors.white70,
                 ),
               ),
               minLeadingWidth: 20,
-              leading: const Icon(
+              leading: Icon(
                 Icons.exit_to_app,
-                color: Colors.black,
+                color: MediaQuery.of(context).platformBrightness ==
+                        Brightness.light
+                    ? Colors.black
+                    : Colors.white70,
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -190,7 +240,10 @@ class _HomePageState extends State<HomePage> {
       ),
       body: loading
           ? Container(
-              color: Colors.white,
+              color:
+                  MediaQuery.of(context).platformBrightness == Brightness.light
+                      ? Colors.white
+                      : Colors.black,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -200,11 +253,15 @@ class _HomePageState extends State<HomePage> {
                     strokeWidth: 2,
                   ),
                   const SizedBox(height: 26),
-                  const Text(
+                  Text(
                     "Loading . . .",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
+                      color: MediaQuery.of(context).platformBrightness ==
+                              Brightness.light
+                          ? Colors.black
+                          : Colors.white60,
                     ),
                   )
                 ],
@@ -219,7 +276,10 @@ class _HomePageState extends State<HomePage> {
                     height: MediaQuery.of(context).size.height * 0.05,
                   ),
                   Image.asset(
-                    "assets/home_bg_1.png",
+                    MediaQuery.of(context).platformBrightness ==
+                            Brightness.light
+                        ? "assets/home_bg_1.png"
+                        : "assets/home_bg_2.png",
                     fit: BoxFit.fitWidth,
                     width: MediaQuery.of(context).size.width,
                   ),
@@ -237,7 +297,10 @@ class _HomePageState extends State<HomePage> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: MediaQuery.of(context).size.height * 0.018,
-                        color: Colors.grey.shade700,
+                        color: MediaQuery.of(context).platformBrightness ==
+                                Brightness.light
+                            ? Colors.grey.shade700
+                            : Colors.white54,
                       ),
                     ),
                   ),
@@ -248,7 +311,13 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: CupertinoSearchTextField(
                       controller: controller,
-                      borderRadius: BorderRadius.circular(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: MediaQuery.of(context).platformBrightness ==
+                                Brightness.light
+                            ? Colors.grey.shade200
+                            : Colors.white.withOpacity(0.85),
+                      ),
                       padding: const EdgeInsets.only(
                         top: 15,
                         bottom: 15,

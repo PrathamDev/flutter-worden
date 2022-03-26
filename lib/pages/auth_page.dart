@@ -14,6 +14,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Expanded(
@@ -63,7 +64,7 @@ class _AuthPageState extends State<AuthPage> {
           ),
           Padding(
             padding:
-                const EdgeInsets.only(right: 20, left: 20, bottom: 50, top: 15),
+                const EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
