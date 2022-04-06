@@ -210,206 +210,329 @@ class _ResultPageState extends State<ResultPage> with StringFunctionsMixin {
                         Expanded(
                           child: TabBarView(
                             children: [
-                              ListView.builder(
-                                itemCount: response.definitions.length,
-                                padding: const EdgeInsets.only(top: 20),
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 20, left: 20, bottom: 10),
-                                    child: Card(
-                                      color: MediaQuery.of(context)
-                                                  .platformBrightness ==
-                                              Brightness.light
-                                          ? Colors.white
-                                          : Colors.grey.shade600,
-                                      elevation: 10,
-                                      child: Container(
-                                        padding: const EdgeInsets.only(
-                                            left: 20,
-                                            right: 20,
-                                            top: 20,
-                                            bottom: 20),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              capitalizeFirstCharacter(response
-                                                  .definitions[index]
-                                                  .partsOfSpeech),
-                                              style: GoogleFonts.poppins(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                            Text(
-                                              capitalizeFirstCharacter(
-                                                response.definitions[index]
-                                                    .definition,
-                                              ),
-                                              style: GoogleFonts.poppins(
-                                                color: Colors.grey.shade800,
-                                              ),
-                                            ),
-                                          ],
+                              response.definitions.isEmpty
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/no_data.png',
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8,
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              ListView.builder(
-                                itemCount: response.synonyms.length,
-                                padding: const EdgeInsets.only(top: 20),
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 20, left: 20, bottom: 10),
-                                    child: Card(
-                                      elevation: 10,
-                                      color: MediaQuery.of(context)
-                                                  .platformBrightness ==
-                                              Brightness.light
-                                          ? Colors.white
-                                          : Colors.grey.shade600,
-                                      child: Container(
-                                        padding: const EdgeInsets.only(
-                                            left: 20,
-                                            right: 20,
-                                            top: 20,
-                                            bottom: 20),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              (index + 1).toString() + ". ",
-                                              style: GoogleFonts.poppins(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            Text(
-                                              capitalizeFirstCharacter(
-                                                response.synonyms[index],
-                                              ),
-                                              style: GoogleFonts.poppins(
-                                                color: Colors.grey.shade900,
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                          ],
+                                        const Text(
+                                          "Oops! No definitions found.",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              ListView.builder(
-                                itemCount: response.antonyms.length,
-                                padding: const EdgeInsets.only(top: 20),
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 20, left: 20, bottom: 10),
-                                    child: Card(
-                                      color: MediaQuery.of(context)
-                                                  .platformBrightness ==
-                                              Brightness.light
-                                          ? Colors.white
-                                          : Colors.grey.shade600,
-                                      elevation: 10,
-                                      child: Container(
-                                        padding: const EdgeInsets.only(
-                                            left: 20,
-                                            right: 20,
-                                            top: 20,
-                                            bottom: 20),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              (index + 1).toString() + ". ",
-                                              style: GoogleFonts.poppins(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            Text(
-                                              capitalizeFirstCharacter(
-                                                response.antonyms[index],
-                                              ),
-                                              style: GoogleFonts.poppins(
-                                                color: Colors.grey.shade900,
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                          ],
+                                        SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.2,
                                         ),
-                                      ),
+                                      ],
+                                    )
+                                  : ListView.builder(
+                                      itemCount: response.definitions.length,
+                                      padding: const EdgeInsets.only(top: 20),
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 20, left: 20, bottom: 10),
+                                          child: Card(
+                                            color: MediaQuery.of(context)
+                                                        .platformBrightness ==
+                                                    Brightness.light
+                                                ? Colors.white
+                                                : Colors.grey.shade600,
+                                            elevation: 10,
+                                            child: Container(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20,
+                                                  right: 20,
+                                                  top: 20,
+                                                  bottom: 20),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    capitalizeFirstCharacter(
+                                                        response
+                                                            .definitions[index]
+                                                            .partsOfSpeech),
+                                                    style: GoogleFonts.poppins(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    capitalizeFirstCharacter(
+                                                      response
+                                                          .definitions[index]
+                                                          .definition,
+                                                    ),
+                                                    style: GoogleFonts.poppins(
+                                                      color:
+                                                          Colors.grey.shade800,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
-                                  );
-                                },
-                              ),
-                              ListView.builder(
-                                itemCount: response.examples.length,
-                                padding: const EdgeInsets.only(top: 20),
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 20, left: 20, bottom: 10),
-                                    child: Card(
-                                      elevation: 10,
-                                      color: MediaQuery.of(context)
-                                                  .platformBrightness ==
-                                              Brightness.light
-                                          ? Colors.white
-                                          : Colors.grey.shade600,
-                                      child: Container(
-                                        padding: const EdgeInsets.only(
-                                            left: 20,
-                                            right: 20,
-                                            top: 20,
-                                            bottom: 20),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              (index + 1).toString() + ". ",
-                                              style: GoogleFonts.poppins(
-                                                color: Colors.black,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                capitalizeFirstCharacter(
-                                                  response.examples[index],
-                                                ),
-                                                style: GoogleFonts.poppins(
-                                                  color: Colors.grey.shade900,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                              response.synonyms.isEmpty
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/no_data.png',
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8,
                                         ),
-                                      ),
+                                        const Text(
+                                          "Oops! No Synonyms found.",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.2,
+                                        ),
+                                      ],
+                                    )
+                                  : ListView.builder(
+                                      itemCount: response.synonyms.length,
+                                      padding: const EdgeInsets.only(top: 20),
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 20, left: 20, bottom: 10),
+                                          child: Card(
+                                            elevation: 10,
+                                            color: MediaQuery.of(context)
+                                                        .platformBrightness ==
+                                                    Brightness.light
+                                                ? Colors.white
+                                                : Colors.grey.shade600,
+                                            child: Container(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20,
+                                                  right: 20,
+                                                  top: 20,
+                                                  bottom: 20),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    (index + 1).toString() +
+                                                        ". ",
+                                                    style: GoogleFonts.poppins(
+                                                      color: Colors.black,
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    capitalizeFirstCharacter(
+                                                      response.synonyms[index],
+                                                    ),
+                                                    style: GoogleFonts.poppins(
+                                                      color:
+                                                          Colors.grey.shade900,
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
-                                  );
-                                },
-                              ),
+                              response.antonyms.isEmpty
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/no_data.png',
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8,
+                                        ),
+                                        const Text(
+                                          "Oops! No Antonyms found.",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.2,
+                                        ),
+                                      ],
+                                    )
+                                  : ListView.builder(
+                                      itemCount: response.antonyms.length,
+                                      padding: const EdgeInsets.only(top: 20),
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 20, left: 20, bottom: 10),
+                                          child: Card(
+                                            color: MediaQuery.of(context)
+                                                        .platformBrightness ==
+                                                    Brightness.light
+                                                ? Colors.white
+                                                : Colors.grey.shade600,
+                                            elevation: 10,
+                                            child: Container(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20,
+                                                  right: 20,
+                                                  top: 20,
+                                                  bottom: 20),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    (index + 1).toString() +
+                                                        ". ",
+                                                    style: GoogleFonts.poppins(
+                                                      color: Colors.black,
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    capitalizeFirstCharacter(
+                                                      response.antonyms[index],
+                                                    ),
+                                                    style: GoogleFonts.poppins(
+                                                      color:
+                                                          Colors.grey.shade900,
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                              response.examples.isEmpty
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/no_data.png',
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8,
+                                        ),
+                                        const Text(
+                                          "Oops! No Examples found.",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.2,
+                                        ),
+                                      ],
+                                    )
+                                  : ListView.builder(
+                                      itemCount: response.examples.length,
+                                      padding: const EdgeInsets.only(top: 20),
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 20, left: 20, bottom: 10),
+                                          child: Card(
+                                            elevation: 10,
+                                            color: MediaQuery.of(context)
+                                                        .platformBrightness ==
+                                                    Brightness.light
+                                                ? Colors.white
+                                                : Colors.grey.shade600,
+                                            child: Container(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20,
+                                                  right: 20,
+                                                  top: 20,
+                                                  bottom: 20),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    (index + 1).toString() +
+                                                        ". ",
+                                                    style: GoogleFonts.poppins(
+                                                      color: Colors.black,
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      capitalizeFirstCharacter(
+                                                        response
+                                                            .examples[index],
+                                                      ),
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        color: Colors
+                                                            .grey.shade900,
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                             ],
                           ),
                         ),

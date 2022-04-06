@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
             DrawerHeader(
               margin: const EdgeInsets.symmetric(horizontal: 10),
               padding: const EdgeInsets.symmetric(
-                vertical: 10,
+                vertical: 5,
                 horizontal: 5,
               ),
               decoration: BoxDecoration(
@@ -66,54 +66,57 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CircleAvatar(
-                    radius: 32,
-                    backgroundColor:
-                        MediaQuery.of(context).platformBrightness ==
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    CircleAvatar(
+                      radius: 32,
+                      backgroundColor:
+                          MediaQuery.of(context).platformBrightness ==
+                                  Brightness.light
+                              ? Colors.white
+                              : Colors.black,
+                      backgroundImage:
+                          FirebaseAuth.instance.currentUser!.photoURL == null
+                              ? const AssetImage(
+                                  'assets/default_user_image.png',
+                                )
+                              : NetworkImage(FirebaseAuth.instance.currentUser!
+                                  .photoURL!) as ImageProvider,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      FirebaseAuth.instance.currentUser!.displayName ??
+                          'Username',
+                      style: TextStyle(
+                        color: MediaQuery.of(context).platformBrightness ==
                                 Brightness.light
-                            ? Colors.white
-                            : Colors.black,
-                    backgroundImage:
-                        FirebaseAuth.instance.currentUser!.photoURL == null
-                            ? const AssetImage(
-                                'assets/default_user_image.png',
-                              )
-                            : NetworkImage(FirebaseAuth.instance.currentUser!
-                                .photoURL!) as ImageProvider,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    FirebaseAuth.instance.currentUser!.displayName ??
-                        'Username',
-                    style: TextStyle(
-                      color: MediaQuery.of(context).platformBrightness ==
-                              Brightness.light
-                          ? Colors.black.withOpacity(0.8)
-                          : Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
+                            ? Colors.black.withOpacity(0.8)
+                            : Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
                     ),
-                  ),
-                  Text(
-                    FirebaseAuth.instance.currentUser!.email ??
-                        "example@gmail.com",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: MediaQuery.of(context).platformBrightness ==
-                              Brightness.light
-                          ? Colors.black.withOpacity(0.8)
-                          : Colors.white54,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 15,
+                    Text(
+                      FirebaseAuth.instance.currentUser!.email ??
+                          "example@gmail.com",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: MediaQuery.of(context).platformBrightness ==
+                                Brightness.light
+                            ? Colors.black.withOpacity(0.8)
+                            : Colors.white54,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                ],
+                    const SizedBox(height: 5),
+                  ],
+                ),
               ),
             ),
             const SizedBox(

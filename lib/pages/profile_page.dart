@@ -211,41 +211,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          ValueListenableBuilder<Box>(
-              valueListenable: Cache.getPreferencesListenable(),
-              builder: (context, box, widget) {
-                return ListTile(
-                  title: Text(
-                    'Dark Mode',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: MediaQuery.of(context).platformBrightness ==
-                              Brightness.light
-                          ? Colors.black
-                          : Colors.white70,
-                    ),
-                  ),
-                  minLeadingWidth: 20,
-                  leading: Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Icon(
-                      Icons.dark_mode_outlined,
-                      color: MediaQuery.of(context).platformBrightness ==
-                              Brightness.light
-                          ? Colors.black
-                          : Colors.white70,
-                      size: 25,
-                    ),
-                  ),
-                  trailing: CupertinoSwitch(
-                      value: box.get("darkMode", defaultValue: false),
-                      onChanged: (value) {
-                        Cache.setDarkMode(value);
-                      }),
-                  onTap: () {},
-                );
-              }),
           ListTile(
             title: Text(
               'Sign out',

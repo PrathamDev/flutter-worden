@@ -6,12 +6,4 @@ class Cache {
     await Hive.initFlutter();
     await Hive.openBox('preferences');
   }
-
-  static ValueListenable<Box> getPreferencesListenable() {
-    return Hive.box('preferences').listenable();
-  }
-
-  static Future setDarkMode(bool value) async {
-    await Hive.box('preferences').put('darkMode', value);
-  }
 }
